@@ -3,6 +3,7 @@
   * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 const express = require('express');
+const { authMiddleware } = require('./authenticator'); 
 const { log } = require('../log');
 const { getConnection } = require('../db');
 const Unit = require('../models/Unit');
@@ -23,7 +24,7 @@ function formatUnitForResponse(item) {
 /**
  * Route for getting all units.
  */
-router.get('/', async (req, res) => {
+router.get('/', authMiddleware('manage units'), async (req, res) => {
 	const conn = getConnection();
 	try {
 		const rows = await Unit.getAll(conn);
@@ -36,7 +37,7 @@ router.get('/', async (req, res) => {
 /**
  * Route for POST, edit unit.
  */
-router.post('/edit', async (req, res) => {
+router.post('/edit', authMiddleware('manage units'), async (req, res) => {
 	const validUnit = {
 		type: 'object',
 		required: ['id', 'identifier'],
@@ -114,7 +115,7 @@ router.post('/edit', async (req, res) => {
 /**
  * Route for POST add unit.
  */
-router.post('/addUnit', async (req, res) => {
+router.post('/addUnit', authMiddleware('manage units'), async (req, res) => {
 	const validUnit = {
 		type: 'object',
 		required: ['name', 'identifier', 'unitRepresent', 'typeOfUnit', 'displayable', 'preferredDisplay'],
@@ -196,7 +197,7 @@ router.post('/addUnit', async (req, res) => {
 /**
  * Route for POST, delete unit.
  */
-router.post('/delete', async (req, res) => {
+router.post('/delete', authMiddleware('manage units'), async (req, res) => {
 	const validParams = {
 		type: 'object',
 		maxProperties: 1,

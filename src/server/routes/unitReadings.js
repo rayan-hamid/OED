@@ -5,6 +5,7 @@
  */
 
 const express = require('express');
+const { authMiddleware } = require('./authenticator');
 const validate = require('jsonschema').validate;
 const mapValues = require('lodash/mapValues');
 const { getConnection } = require('../db');
@@ -377,7 +378,7 @@ function validateThreeDQueryParams(queryParams) {
 
 function createRouter() {
 	const router = express.Router();
-	router.get('/line/meters/:meter_ids', async (req, res) => {
+	router.get('/line/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
@@ -389,7 +390,7 @@ function createRouter() {
 		}
 	});
 
-	router.get('/line/groups/:group_ids', async (req, res) => {
+	router.get('/line/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
@@ -401,7 +402,7 @@ function createRouter() {
 		}
 	});
 
-	router.get('/bar/meters/:meter_ids', async (req, res) => {
+	router.get('/bar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
@@ -414,7 +415,7 @@ function createRouter() {
 		}
 	});
 
-	router.get('/bar/groups/:group_ids', async (req, res) => {
+	router.get('/bar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
@@ -427,7 +428,7 @@ function createRouter() {
 		}
 	});
 
-	router.get('/radar/meters/:meter_ids', async (req, res) => {
+	router.get('/radar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
@@ -439,7 +440,7 @@ function createRouter() {
 		}
 	});
 
-	router.get('/radar/groups/:group_ids', async (req, res) => {
+	router.get('/radar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
@@ -451,7 +452,7 @@ function createRouter() {
 		}
 	});
 
-	router.get('/threeD/meters/:meter_ids', async (req, res) => {
+	router.get('/threeD/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
@@ -478,7 +479,7 @@ function createRouter() {
 		}
 	});
 
-	router.get('/threeD/groups/:group_id', async (req, res) => {
+	router.get('/threeD/groups/:group_id', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {
 			res.sendStatus(400);
 		} else {
