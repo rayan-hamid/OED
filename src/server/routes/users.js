@@ -28,10 +28,11 @@ router.get('/', adminAuthMiddleware('get all users'), async (req, res) => {
 	}
 });
 
-
 /**
- * Route for obtaining the requestor's user info
- */
+* GET /users/token
+* Description: Return the currently-logged-in user’s username and role.
+* Permission: any authenticated user
+*/
 router.get('/token', authMiddleware('get own user'), async (req, res) => {
 	const token = req.headers.token || req.body.token || req.query.token;
 	const validParams = {
@@ -92,6 +93,11 @@ router.get('/:user_id', adminAuthMiddleware('get one user'), async (req, res) =>
 	}
 });
 
+/**
+ * POST /users/create
+ * Description: Create a new user with username, password, role, note.
+ * Permission: admin only
+ */
 router.post('/create', adminAuthMiddleware('create a user.'), async (req, res) => {
 	const validParams = {
 		type: 'object',

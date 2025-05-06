@@ -378,6 +378,11 @@ function validateThreeDQueryParams(queryParams) {
 
 function createRouter() {
 	const router = express.Router();
+/**
+ * GET /unitReadings/line/meters/:meter_ids
+ * Description: Fetch line graph data (reading/min/max timestamps) for multiple meters.
+ * Permission: view readings
+ */
 	router.get('/line/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -390,6 +395,11 @@ function createRouter() {
 		}
 	});
 
+	/**
+	* GET /unitReadings/line/groups/:group_ids
+	* Description: Fetch line graph data for multiple groups.
+	* Permission: view readings
+	*/
 	router.get('/line/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -402,6 +412,12 @@ function createRouter() {
 		}
 	});
 
+	/**
+   * GET /unitReadings/bar/meters/:meter_ids
+   * Description: Fetch bar chart aggregate readings (startTimestamp/endTimestamp + reading) for multiple meters.
+   * Query params: timeInterval, barWidthDays, graphicUnitId
+   * Permission: view readings
+   */
 	router.get('/bar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -415,6 +431,12 @@ function createRouter() {
 		}
 	});
 
+  /**
+   * GET /unitReadings/bar/groups/:group_ids
+   * Description: Fetch bar chart aggregate readings for multiple groups.
+   * Query params: timeInterval, barWidthDays, graphicUnitId
+   * Permission: view readings
+   */
 	router.get('/bar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -428,6 +450,12 @@ function createRouter() {
 		}
 	});
 
+  /**
+   * GET /unitReadings/radar/meters/:meter_ids
+   * Description: Fetch radar chart readings (reading + timestamps) for multiple meters.
+   * Query params: timeInterval, graphicUnitId
+   * Permission: view readings
+   */
 	router.get('/radar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -440,6 +468,12 @@ function createRouter() {
 		}
 	});
 
+  /**
+   * GET /unitReadings/radar/groups/:group_ids
+   * Description: Fetch radar chart readings for multiple groups.
+   * Query params: timeInterval, graphicUnitId
+   * Permission: view readings
+   */
 	router.get('/radar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -451,6 +485,13 @@ function createRouter() {
 			res.json(forJson);
 		}
 	});
+
+  /**
+   * GET /unitReadings/threeD/meters/:meter_ids
+   * Description: Fetch 3D (hourly) readings for multiple meters; only up to 1 year of data.
+   * Query params: timeInterval, graphicUnitId, readingInterval
+   * Permission: view readings
+   */
 
 	router.get('/threeD/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {
@@ -479,6 +520,12 @@ function createRouter() {
 		}
 	});
 
+  /**
+   * GET /unitReadings/threeD/groups/:group_id
+   * Description: Fetch 3D (hourly) readings for a single group; only up to 1 year of data.
+   * Query params: timeInterval, graphicUnitId, readingInterval
+   * Permission: view readings
+   */
 	router.get('/threeD/groups/:group_id', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {
 			res.sendStatus(400);
