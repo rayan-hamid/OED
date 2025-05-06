@@ -14,12 +14,11 @@
  
  const router = express.Router();
  
- /**
-  * GET /units
-  * Retrieve a list of all measurement units.
-  * - Enforces that the caller has the 'manage units' permission.
-  * - Returns an array of unit objects (id, identifier, display settings, etc.).
-  */
+/**
+ * GET /units
+ * Description: Retrieve a list of all measurement units.
+ * Permission: manage units
+ */
  router.get(
    '/',
    authMiddleware('manage units'),
@@ -46,13 +45,11 @@
    }
  );
  
- /**
-  * POST /units/edit
-  * Update an existing unit’s properties.
-  * - Validates the request body against the unit schema.
-  * - If the suffix changes, removes any dependent conversions/units.
-  * - Requires 'manage units' permission.
-  */
+/**
+ * POST /units/edit
+ * Description: Update properties of an existing unit.
+ * Permission: manage units
+ */
  router.post(
    '/edit',
    authMiddleware('manage units'),
@@ -81,13 +78,11 @@
    }
  );
  
- /**
-  * POST /units/addUnit
-  * Create a brand-new measurement unit.
-  * - Validates request against the unit schema.
-  * - Inserts within a transaction for atomicity.
-  * - Requires 'manage units' permission.
-  */
+/**
+ * POST /units/addUnit
+ * Description: Create a new measurement unit.
+ * Permission: manage units
+ */
  router.post(
    '/addUnit',
    authMiddleware('manage units'),
@@ -124,13 +119,11 @@
    }
  );
  
- /**
-  * POST /units/delete
-  * Delete a unit by its ID.
-  * - Validates that an integer `id` was provided.
-  * - Relies on the database to error if the unit doesn’t exist.
-  * - Requires 'manage units' permission.
-  */
+/**
+ * POST /units/delete
+ * Description: Remove a unit by ID.
+ * Permission: manage units
+ */
  router.post(
    '/delete',
    authMiddleware('manage units'),

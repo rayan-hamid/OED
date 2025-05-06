@@ -13,6 +13,9 @@ const Reading = require('../models/Reading');
 const { TimeInterval } = require('../../common/TimeInterval');
 const moment = require('moment');
 
+/**
+ * Validate comma-separated integer list for meter IDs.
+ */
 function validateMeterLineReadingsParams(params) {
 	const validParams = {
 		type: 'object',
@@ -30,6 +33,9 @@ function validateMeterLineReadingsParams(params) {
 	return paramsValidationResult.valid;
 }
 
+/**
+ * Validate timeInterval & graphicUnitId in query.
+ */
 function validateLineReadingsQueryParams(queryParams) {
 	const validQuery = {
 		type: 'object',
@@ -50,6 +56,9 @@ function validateLineReadingsQueryParams(queryParams) {
 	return queryValidationResult.valid;
 }
 
+/**
+ * Normalize a raw reading row for JSON response.
+ */
 function formatReadingRow(readingRow) {
 	return {
 		reading: readingRow.reading_rate,
@@ -77,6 +86,9 @@ async function meterLineReadings(meterIDs, graphicUnitId, timeInterval) {
 	return mapValues(rawReadings, readingsForMeter => readingsForMeter.map(formatReadingRow));
 }
 
+/**
+ * Validate comma-separated integer list for group IDs.
+ */
 function validateGroupLineReadingsParams(params) {
 	const validParams = {
 		type: 'object',
@@ -378,11 +390,11 @@ function validateThreeDQueryParams(queryParams) {
 
 function createRouter() {
 	const router = express.Router();
-/**
- * GET /unitReadings/line/meters/:meter_ids
- * Description: Fetch line graph data (reading/min/max timestamps) for multiple meters.
- * Permission: view readings
- */
+  /**
+   * GET /unitReadings/line/meters/:meter_ids
+   * Fetch line graph data for multiple meters.
+   * Permission: view line meter readings
+   */
 	router.get('/line/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -395,11 +407,11 @@ function createRouter() {
 		}
 	});
 
-	/**
-	* GET /unitReadings/line/groups/:group_ids
-	* Description: Fetch line graph data for multiple groups.
-	* Permission: view readings
-	*/
+  /**
+   * GET /unitReadings/line/groups/:group_ids
+   * Fetch line graph data for multiple groups.
+   * Permission: view line group readings
+   */
 	router.get('/line/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -412,11 +424,10 @@ function createRouter() {
 		}
 	});
 
-	/**
-   * GET /unitReadings/bar/meters/:meter_ids
-   * Description: Fetch bar chart aggregate readings (startTimestamp/endTimestamp + reading) for multiple meters.
-   * Query params: timeInterval, barWidthDays, graphicUnitId
-   * Permission: view readings
+  /**
+   * GET /unitReadings/line/groups/:group_ids
+   * Fetch line graph data for multiple groups.
+   * Permission: view line group readings
    */
 	router.get('/bar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
@@ -433,9 +444,8 @@ function createRouter() {
 
   /**
    * GET /unitReadings/bar/groups/:group_ids
-   * Description: Fetch bar chart aggregate readings for multiple groups.
-   * Query params: timeInterval, barWidthDays, graphicUnitId
-   * Permission: view readings
+   * Fetch bar chart data for multiple groups.
+   * Permission: view bar group readings
    */
 	router.get('/bar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
@@ -452,9 +462,8 @@ function createRouter() {
 
   /**
    * GET /unitReadings/radar/meters/:meter_ids
-   * Description: Fetch radar chart readings (reading + timestamps) for multiple meters.
-   * Query params: timeInterval, graphicUnitId
-   * Permission: view readings
+   * Fetch radar chart data for multiple meters.
+   * Permission: view radar meter readings
    */
 	router.get('/radar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
@@ -470,9 +479,8 @@ function createRouter() {
 
   /**
    * GET /unitReadings/radar/groups/:group_ids
-   * Description: Fetch radar chart readings for multiple groups.
-   * Query params: timeInterval, graphicUnitId
-   * Permission: view readings
+   * Fetch radar chart data for multiple groups.
+   * Permission: view radar group readings
    */
 	router.get('/radar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
@@ -488,11 +496,9 @@ function createRouter() {
 
   /**
    * GET /unitReadings/threeD/meters/:meter_ids
-   * Description: Fetch 3D (hourly) readings for multiple meters; only up to 1 year of data.
-   * Query params: timeInterval, graphicUnitId, readingInterval
-   * Permission: view readings
+   * Fetch hourly 3D data for multiple meters (max 1 year).
+   * Permission: view 3D meter readings
    */
-
 	router.get('/threeD/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {
 			res.sendStatus(400);
@@ -522,9 +528,8 @@ function createRouter() {
 
   /**
    * GET /unitReadings/threeD/groups/:group_id
-   * Description: Fetch 3D (hourly) readings for a single group; only up to 1 year of data.
-   * Query params: timeInterval, graphicUnitId, readingInterval
-   * Permission: view readings
+   * Fetch hourly 3D data for a group (max 1 year).
+   * Permission: view 3D group readings
    */
 	router.get('/threeD/groups/:group_id', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {

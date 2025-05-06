@@ -16,7 +16,9 @@ const secretToken = require('../config').secretToken;
 const router = express.Router();
 
 /**
- * Route for getting all users
+ * GET /users
+ * Description: Return a list of all users.
+ * Permission: admin only
  */
 router.get('/', adminAuthMiddleware('get all users'), async (req, res) => {
 	const conn = getConnection();
@@ -29,10 +31,10 @@ router.get('/', adminAuthMiddleware('get all users'), async (req, res) => {
 });
 
 /**
-* GET /users/token
-* Description: Return the currently-logged-in user’s username and role.
-* Permission: any authenticated user
-*/
+ * GET /users/token
+ * Description: Return the current user's username and role based on their token.
+ * Permission: authenticated user
+ */
 router.get('/token', authMiddleware('get own user'), async (req, res) => {
 	const token = req.headers.token || req.body.token || req.query.token;
 	const validParams = {
@@ -64,7 +66,9 @@ router.get('/token', authMiddleware('get own user'), async (req, res) => {
 });
 
 /**
- * Route for getting a specific user by ID
+ * GET /users/:user_id
+ * Description: Return details for a specific user by ID.
+ * Permission: admin only
  * @param user_id
  */
 router.get('/:user_id', adminAuthMiddleware('get one user'), async (req, res) => {
@@ -95,7 +99,7 @@ router.get('/:user_id', adminAuthMiddleware('get one user'), async (req, res) =>
 
 /**
  * POST /users/create
- * Description: Create a new user with username, password, role, note.
+ * Description: Create a new user with username, password, role, and note.
  * Permission: admin only
  */
 router.post('/create', adminAuthMiddleware('create a user.'), async (req, res) => {
@@ -142,7 +146,9 @@ router.post('/create', adminAuthMiddleware('create a user.'), async (req, res) =
 });
 
 /**
- * Route for updating user role
+ * POST /users/edit
+ * Description: Update an existing user's role, username, or password.
+ * Permission: admin only
  */
 router.post('/edit', adminAuthMiddleware('update a user role'), async (req, res) => {
 	
@@ -232,7 +238,9 @@ router.post('/edit', adminAuthMiddleware('update a user role'), async (req, res)
 });
 
 /**
- * Route for deleting a user
+ * POST /users/delete
+ * Description: Delete a user by their username (admin cannot delete self).
+ * Permission: admin only
  */
 router.post('/delete', adminAuthMiddleware('delete a user'), async (req, res) => {
 	const validParams = {
