@@ -391,9 +391,7 @@ function validateThreeDQueryParams(queryParams) {
 function createRouter() {
 	const router = express.Router();
   /**
-   * GET /unitReadings/line/meters/:meter_ids
-   * Fetch line graph data for multiple meters.
-   * Permission: view line meter readings
+   * Route for fetching line readings by meter IDs
    */
 	router.get('/line/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
@@ -408,9 +406,7 @@ function createRouter() {
 	});
 
   /**
-   * GET /unitReadings/line/groups/:group_ids
-   * Fetch line graph data for multiple groups.
-   * Permission: view line group readings
+   * Route for fetching line readings by group IDs
    */
 	router.get('/line/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupLineReadingsParams(req.params) && validateLineReadingsQueryParams(req.query))) {
@@ -425,9 +421,7 @@ function createRouter() {
 	});
 
   /**
-   * GET /unitReadings/line/groups/:group_ids
-   * Fetch line graph data for multiple groups.
-   * Permission: view line group readings
+   * Route for fetching bar readings by meter IDs
    */
 	router.get('/bar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
@@ -443,9 +437,7 @@ function createRouter() {
 	});
 
   /**
-   * GET /unitReadings/bar/groups/:group_ids
-   * Fetch bar chart data for multiple groups.
-   * Permission: view bar group readings
+   * Route for fetching bar readings by group IDs
    */
 	router.get('/bar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupBarReadingsParams(req.params) && validateBarReadingsQueryParams(req.query))) {
@@ -461,9 +453,7 @@ function createRouter() {
 	});
 
   /**
-   * GET /unitReadings/radar/meters/:meter_ids
-   * Fetch radar chart data for multiple meters.
-   * Permission: view radar meter readings
+   * Route for fetching radar readings by meter IDs
    */
 	router.get('/radar/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
@@ -478,9 +468,7 @@ function createRouter() {
 	});
 
   /**
-   * GET /unitReadings/radar/groups/:group_ids
-   * Fetch radar chart data for multiple groups.
-   * Permission: view radar group readings
+   * Route for fetching radar readings by group IDs
    */
 	router.get('/radar/groups/:group_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupRadarReadingsParams(req.params) && validateRadarReadingsQueryParams(req.query))) {
@@ -495,9 +483,7 @@ function createRouter() {
 	});
 
   /**
-   * GET /unitReadings/threeD/meters/:meter_ids
-   * Fetch hourly 3D data for multiple meters (max 1 year).
-   * Permission: view 3D meter readings
+   * Route for fetching 3D readings by meter IDs
    */
 	router.get('/threeD/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateMeterThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {
@@ -527,9 +513,7 @@ function createRouter() {
 	});
 
   /**
-   * GET /unitReadings/threeD/groups/:group_id
-   * Fetch hourly 3D data for a group (max 1 year).
-   * Permission: view 3D group readings
+   * Route for fetching 3D readings by group ID
    */
 	router.get('/threeD/groups/:group_id', authMiddleware('view readings'), async (req, res) => {
 		if (!(validateGroupThreeDReadingsParams(req.params) && validateThreeDQueryParams(req.query))) {

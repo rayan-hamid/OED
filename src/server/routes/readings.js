@@ -15,10 +15,8 @@ const { getConnection } = require('../db');
 const router = express.Router();
 
 /**
-* GET /line/count/meters/:meter_ids
-* Description: Return the total count of readings for the given meter IDs and time interval.
-* Permission: view readings
-*/
+ * Route for fetching readings count by meter IDs and time interval.
+ */
 router.get('/line/count/meters/:meter_ids', authMiddleware('view readings'), async (req, res) => {
 	const validParams = {
 		type: 'object',
@@ -61,10 +59,8 @@ router.get('/line/count/meters/:meter_ids', authMiddleware('view readings'), asy
 })
 
 /**
-* GET /line/raw/meter/:meter_id
-* Description: Return the raw reading entries for a single meter in the given time interval.
-* Permission: view readings
-*/
+ * Route for fetching raw readings by meter ID and time interval.
+ */
 router.get('/line/raw/meter/:meter_id', authMiddleware('view readings'), async (req, res) => {
 	const validParams = {
 		type: 'object',

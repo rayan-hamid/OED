@@ -15,9 +15,7 @@
  const router = express.Router();
  
 /**
- * GET /units
- * Description: Retrieve a list of all measurement units.
- * Permission: manage units
+ * Route for listing all units.
  */
  router.get(
    '/',
@@ -46,9 +44,7 @@
  );
  
 /**
- * POST /units/edit
- * Description: Update properties of an existing unit.
- * Permission: manage units
+ * Route for editing a unit by ID.
  */
  router.post(
    '/edit',
@@ -79,9 +75,7 @@
  );
  
 /**
- * POST /units/addUnit
- * Description: Create a new measurement unit.
- * Permission: manage units
+ * Route for creating a new unit.
  */
  router.post(
    '/addUnit',
@@ -120,9 +114,7 @@
  );
  
 /**
- * POST /units/delete
- * Description: Remove a unit by ID.
- * Permission: manage units
+ * Route for deleting a unit by ID.
  */
  router.post(
    '/delete',
